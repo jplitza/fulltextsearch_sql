@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+  - SPDX-FileCopyrightText: 2025 Jan-Philipp Litza
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>fulltextsearch_sql</id>
+	<name>Full text search - SQL Platform</name>
+	<summary>Index using Nextcloud database</summary>
+	<description><![CDATA[
+
+Extension to the _Full text search_ app to communicate with the usual Nextcloud database.
+
+]]>
+	</description>
+	<version>0.0.1-dev.0</version>
+	<licence>agpl</licence>
+	<author>Jan-Philipp litza</author>
+	<namespace>FullTextSearch_SQL</namespace>
+	<documentation>
+		<admin>https://github.com/jplitza/fulltextsearch_sql/wiki</admin>
+	</documentation>
+	<category>search</category>
+	<website>https://github.com/jplitza/fulltextsearch_sql</website>
+	<bugs>https://github.com/jplitza/fulltextsearch_sql/issues</bugs>
+	<repository>https://github.com/jplitza/fulltextsearch_sql.git</repository>
+	<dependencies>
+		<nextcloud min-version="31" max-version="32"/>
+		<database>mysql</database>
+		<database>postgresql</database>
+	</dependencies>
+
+	<fulltextsearch>
+		<platform>OCA\FullTextSearch_SQL\Platform\SQLPlatform</platform>
+	</fulltextsearch>
+</info>
