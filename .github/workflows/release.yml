@@ -27,8 +27,6 @@ jobs:
           echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v4
-        with:
-          path: ${{ env.APP_NAME }}
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -46,7 +44,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Create release archive
-        run: tar -czf ${{runner.temp}}/${{env.APP_NAME}}.tar.gz --exclude '.git*' --exclude 'composer.*' .
+        run: tar -czf ${{runner.temp}}/${{env.APP_NAME}}.tar.gz --exclude '.git*' --exclude 'composer.*' --transform 's/^\./${{env.APP_NAME}}/' .
       
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
