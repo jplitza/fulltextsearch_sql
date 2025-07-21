@@ -17,11 +17,14 @@ class IndexDocumentEntity extends Entity {
 	protected $providerId;
 	protected $modified;
 	protected $owner;
-	// TODO: Access
-	// TODO: Tags
-	// TODO: Metadata Tags
-	// TODO: Subtags
-	// TODO: Parts
+    protected $accessUsers;
+    protected $accessCircles;
+    protected $accessGroups;
+    protected $accessLinks;
+	protected $tags;
+	protected $metadata;
+	protected $subtags;
+	protected $parts;
 	protected $link;
 	protected $title;
 	protected $content;
@@ -32,6 +35,14 @@ class IndexDocumentEntity extends Entity {
 		$this->addType('providerId', Types::STRING);
 		$this->addType('modified', Types::DATETIME_IMMUTABLE);
 		$this->addType('owner', Types::STRING);
+        $this->addType('accessUsers', Types::JSON);
+        $this->addType('accessCircles', Types::JSON);
+        $this->addType('accessGroups', Types::JSON);
+        $this->addType('accessLinks', Types::JSON);
+        $this->addType('tags', Types::JSON);
+        $this->addType('metadata', Types::JSON);
+        $this->addType('subtags', Types::JSON);
+        $this->addType('parts', Types::JSON);
 		$this->addType('link', Types::STRING);
 		$this->addType('title', Types::STRING);
 		$this->addType('content', Types::BLOB);

@@ -44,6 +44,30 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			$table->addColumn('owner', Types::STRING, [
 				'notnull' => true
 			]);
+            $table->addColumn('access_users', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('access_circles', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('access_groups', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('access_links', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('tags', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('metadata', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('subtags', Types::JSON, [
+                'notnull' => true
+            ]);
+            $table->addColumn('parts', Types::JSON, [
+                'notnull' => true
+            ]);
 			$table->addColumn('link', Types::STRING, [
 				'notnull' => true
 			]);

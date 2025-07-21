@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OCA\FullTextSearch_SQL\Platform;
 
 use OC\FullTextSearch\Model\IndexDocument;
+use OC\FullTextSearch\Model\DocumentAccess;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\FullTextSearch\IFullTextSearchPlatform;
@@ -184,6 +185,15 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				}
 				$indexDocument->setModified((new \DateTimeImmutable())->setTimestamp($document->getModifiedTime()));
 				$indexDocument->setOwner($document->getAccess()->getOwnerId());
+				$access = $document->getAccess();
+				$indexDocument->setAccessUsers($access->getUsers());
+				$indexDocument->setAccessCircles($access->getCircles());
+				$indexDocument->setAccessGroups($access->getGroups());
+				$indexDocument->setAccessLinks($access->getLinks());
+				$indexDocument->setTags($document->getTags());
+				$indexDocument->setMetadata($document->getMetaTags());
+				$indexDocument->setSubtags($document->getSubTags());
+				$indexDocument->setParts($document->getParts());
 				$indexDocument->setLink($document->getLink());
 				$indexDocument->setTitle($document->getTitle());
 
@@ -306,17 +316,24 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @return IIndexDocument
 	 */
 	private function resultToIndexDocument(IndexDocumentEntity $result) {
+		$access = new DocumentAccess($result->getOwner());
+		$access->setUsers($result->getAccessUsers());
+		$access->getCircles($result->getAccessCircles());
+		$access->getGroups($result->getAccessGroups());
+		$access->getLinks($result->getAccessLinks());
+
 		$index = new IndexDocument($result->getProviderId(), $result->getDocumentId());
-		//$index->setAccess();
-		//$index->setMetaTags();
-		//$index->setSubTags($result['_source']['subtags']);
-		//$index->setTags($result['_source']['tags']);
+		$index->setAccess($access);
+		$index->setMetaTags($result->getMetadata());
+		$index->setSubTags($result->getSubtags());
+		$index->setTags($result->getTags());
 		//$index->setHash($result['_source']['hash']);
 		//$index->setSource($result['_source']['source']);
+		$index->setModifiedTime($result->getModified()->getTimestamp());
 		$index->setContent($result->getContent());
 		$index->setTitle($result->getTitle());
 		$index->setScore(strval($result->getScore()));
-		//$index->setParts($result['_source']['parts']);
+		$index->setParts($result->getParts());
 		return $index;
 	}
 
