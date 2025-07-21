@@ -204,6 +204,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				if (str_starts_with($content, '%PDF-')) {
 					$config = new \Smalot\PdfParser\Config();
 					$config->setRetainImageContent(false);
+					$config->setIgnoreEncryption(true);
 					$parser = new \Smalot\PdfParser\Parser([], $config); 
 					$pdf = $parser->parseContent($content);
 					$content = $pdf->getText();
