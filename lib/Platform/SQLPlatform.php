@@ -191,8 +191,10 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				if ($document->isContentEncoded() === IIndexDocument::ENCODED_BASE64) {
 					$content = base64_decode($content);
 				}
-				if (substr($content, 0, 5) == '%PDF-') {
-					$parser = new \Smalot\PdfParser\Parser(); 
+				if (str_starts_with($content, '%PDF-')) {
+					$config = new \Smalot\PdfParser\Config();
+					$config->setRetainImageContent(false);
+					$parser = new \Smalot\PdfParser\Parser([], $config); 
 					$pdf = $parser->parseContent($content);
 					$content = $pdf->getText();
 				}
