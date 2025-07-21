@@ -186,11 +186,17 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				$indexDocument->setOwner($document->getAccess()->getOwnerId());
 				$indexDocument->setLink($document->getLink());
 				$indexDocument->setTitle($document->getTitle());
+
+				$content = $document->getContent();
 				if ($document->isContentEncoded() === IIndexDocument::ENCODED_BASE64) {
-					$indexDocument->setContent(base64_decode($document->getContent()));
-				} else {
-					$indexDocument->setContent($document->getContent());
+					$content = base64_decode($content);
 				}
+				if (substr($content, 0, 5) == '%PDF-') {
+					$parser = new \Smalot\PdfParser\Parser(); 
+					$pdf = $parser->parseContent($content);
+					$content = $pdf->getText();
+				}
+				$indexDocument->setContent($content);
 
 				if ($indexDocument->getId()) {
 					$this->indexDocumentMapper->update($indexDocument);
@@ -199,7 +205,6 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				}
 			}
 
-			//$this->indexDocumentMapper->flush();
 			$index->setLastIndex();
 			$index->setStatus(IIndex::INDEX_DONE);
 			$this->updateNewIndexResult(
@@ -215,7 +220,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				IIndex::ERROR_SEV_3
 			);
 			$this->updateNewIndexResult(
-				$index, json_encode($result), 'ok',
+				$index, json_encode($result), 'fail',
 				IRunner::RESULT_TYPE_FAIL
 			);
 		}

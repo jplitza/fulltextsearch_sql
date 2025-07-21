@@ -31,6 +31,7 @@ class Application extends App implements IBootstrap {
 	 * @param IRegistrationContext $context
 	 */
 	public function register(IRegistrationContext $context): void {
+        require_once __DIR__ . '/../../vendor/autoload.php';
 	}
 
 	/**

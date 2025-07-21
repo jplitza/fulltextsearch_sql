@@ -1,0 +1,14 @@
+{
+    "name": "jplitza/fulltextsearch_sql",
+    "description": "Nextcloud extension to the _Full text search_ app to communicate with the usual Nextcloud database.",
+    "license": "AGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Jan-Philipp Litza",
+            "email": "janphilipp@litza.de"
+        }
+    ],
+    "require": {
+        "smalot/pdfparser": "^2.12"
+    }
+}
