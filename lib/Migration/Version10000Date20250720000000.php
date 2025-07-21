@@ -44,30 +44,30 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			$table->addColumn('owner', Types::STRING, [
 				'notnull' => true
 			]);
-            $table->addColumn('access_users', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('access_circles', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('access_groups', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('access_links', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('tags', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('metadata', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('subtags', Types::JSON, [
-                'notnull' => true
-            ]);
-            $table->addColumn('parts', Types::JSON, [
-                'notnull' => true
-            ]);
+			$table->addColumn('access_users', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('access_circles', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('access_groups', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('access_links', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('tags', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('metadata', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('subtags', Types::JSON, [
+				'notnull' => true
+			]);
+			$table->addColumn('parts', Types::JSON, [
+				'notnull' => true
+			]);
 			$table->addColumn('link', Types::STRING, [
 				'notnull' => true
 			]);
@@ -76,9 +76,9 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('content', Types::TEXT, [
 				'notnull' => true,
-                'customSchemaOptions' => [
-				    'collation' => 'utf8mb4_unicode_ci'
-                ]
+				'customSchemaOptions' => [
+					'collation' => 'utf8mb4_unicode_ci'
+				]
 			]);
 			$table->setPrimaryKey(['id']);
 			$table->addUniqueIndex(['provider_id', 'document_id'], self::TABLE . '_document_id');
@@ -92,8 +92,8 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			case IDBConnection::PLATFORM_MYSQL:
 				$this->db->executeQuery("CREATE FULLTEXT INDEX " . self::TABLE . "_content ON " . $tablename . "(content)");
 
-                // Apparently if we don't set this, Nextcloud decides to set it during the next repair, while *also* overwriting our collation!
-                $this->db->executeQuery("ALTER TABLE " . $tablenamee . " ROW_FORMAT = DYNAMIC;");
+				// Apparently if we don't set this, Nextcloud decides to set it during the next repair, while *also* overwriting our collation!
+				$this->db->executeQuery("ALTER TABLE " . $tablenamee . " ROW_FORMAT = DYNAMIC;");
 				break;
 			case IDBConnection::PLATFORM_POSTGRES:
 				// TODO: Make language configurable

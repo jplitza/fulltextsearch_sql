@@ -56,9 +56,9 @@ class IndexDocumentMapper extends QBMapper {
 
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:
-                $q = 'MATCH (content) AGAINST (:search IN BOOLEAN MODE)';
+				$q = 'MATCH (content) AGAINST (:search IN BOOLEAN MODE)';
 				$qb->andWhere($q)
-                    ->selectAlias($qb->createFunction($q), 'score');
+					->selectAlias($qb->createFunction($q), 'score');
 				break;
 			case IDBConnection::PLATFORM_POSTGRES:
 				$qb->andWhere('to_tsvector(content) @@ to_tsquery(:search)');
