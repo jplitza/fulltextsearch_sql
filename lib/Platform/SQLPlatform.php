@@ -250,10 +250,15 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @param IDocumentAccess $access
 	 */
 	public function searchRequest(ISearchResult $result, IDocumentAccess $access) {
+		$starttime = hrtime(true);
+		$rawResults = $this->indexDocumentMapper->search($result->getRequest());
+		$endtime = hrtime(true);
 		$result->setDocuments(array_map(
 			[$this, 'resultToIndexDocument'],
-			$this->indexDocumentMapper->search($result->getRequest())
+			$rawResults
 		));
+		$result->setTotal(count($rawResults));
+		$result->setTime(intval(($endtime - $starttime) / 1e6));
 
 		// TODO: make configurable
 		$contextlen = 30;
