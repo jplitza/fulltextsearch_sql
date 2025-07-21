@@ -32,7 +32,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Create release archive
-      run: tar -czf v${{github.ref_name}}.tar.gz --exclude .git* --exclude composer.* .
+      run: tar -czf ${{github.ref_name}}.tar.gz --exclude '.git*' --exclude 'composer.*' --exclude '*.tar.gz' .
     
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
