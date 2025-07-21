@@ -43,7 +43,7 @@ class IndexDocumentMapper extends QBMapper {
 	public function search(ISearchRequest $request) {
 		$qb = $this->db->getQueryBuilder();
 
-		$qb->select('id', 'document_id', 'provider_id', 'modified', 'owner', 'link', 'title')
+		$qb->select('*')
 			->from(self::TABLE);
 		
 		if (!in_array("all", $request->getProviders())) {

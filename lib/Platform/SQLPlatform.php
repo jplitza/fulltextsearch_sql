@@ -244,6 +244,30 @@ class SQLPlatform implements IFullTextSearchPlatform {
 			[$this, 'resultToIndexDocument'],
 			$this->indexDocumentMapper->search($result->getRequest())
 		));
+
+		// TODO: make configurable
+		$contextlen = 30;
+		foreach ($result->getDocuments() as $document) {
+			$content = $document->getContent();
+			if (preg_match_all('/\w+/', $result->getRequest()->getSearch(), $matches, PREG_PATTERN_ORDER)) {
+				foreach ($matches[0] as $term) {
+					$matchpos = mb_stripos($content, $term);
+					if ($matchpos === false) {
+						continue;
+					}
+					$startpos = $this->findSpace($content, max(0, $matchpos - $contextlen), $contextlen, true);
+					$endpos = $this->findSpace($content, $matchpos + strlen($term) + $contextlen, $contextlen);
+					$document->addExcerpt(
+						$term,
+						mb_substr(
+							$content,
+							$startpos,
+							$endpos - $startpos,
+						)
+					);
+				}
+			}
+		}
 	}
 
 
@@ -289,9 +313,24 @@ class SQLPlatform implements IFullTextSearchPlatform {
 		//$index->setTags($result['_source']['tags']);
 		//$index->setHash($result['_source']['hash']);
 		//$index->setSource($result['_source']['source']);
+		$index->setContent($result->getContent());
 		$index->setTitle($result->getTitle());
 		$index->setScore(strval($result->getScore()));
 		//$index->setParts($result['_source']['parts']);
 		return $index;
+	}
+
+	private function findSpace(string $haystack, int $offset, int $tolerance, bool $reverse = false) {
+		if ($reverse) {
+			$pos = mb_strrpos(mb_substr($haystack, 0, $offset), ' ');
+		} else {
+			$pos = mb_strpos($haystack, ' ', $offset);
+		}
+
+		if ($pos !== false && abs($offset - $pos) < $tolerance) {
+			return $pos;
+		} else {
+			return $offset;
+		}
 	}
 }
