@@ -91,6 +91,9 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:
 				$this->db->executeQuery("CREATE FULLTEXT INDEX " . self::TABLE . "_content ON " . $tablename . "(content)");
+
+                // Apparently if we don't set this, Nextcloud decides to set it during the next repair, while *also* overwriting our collation!
+                $this->db->executeQuery("ALTER TABLE " . $tablenamee . " ROW_FORMAT = DYNAMIC;");
 				break;
 			case IDBConnection::PLATFORM_POSTGRES:
 				// TODO: Make language configurable
