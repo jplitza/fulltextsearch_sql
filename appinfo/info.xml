@@ -15,7 +15,7 @@ Extension to the _Full text search_ app to communicate with the usual Nextcloud 
 
 ]]>
 	</description>
-	<version>0.0.1-dev.0</version>
+	<version>0.0.1</version>
 	<licence>agpl</licence>
 	<author>Jan-Philipp litza</author>
 	<namespace>FullTextSearch_SQL</namespace>
