@@ -13,6 +13,7 @@ use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\FullTextSearch\Model\ISearchRequest;
+use OCP\FullTextSearch\Model\IDocumentAccess;
 use OCA\FullTextSearch_SQL\Db\IndexDocumentEntity;
 
 class IndexDocumentMapper extends QBMapper {
@@ -40,19 +41,27 @@ class IndexDocumentMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function search(ISearchRequest $request) {
+	public function search(ISearchRequest $request, string $providerId, IDocumentAccess $access) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
 			->from(self::TABLE);
-		
-		if (!in_array("all", $request->getProviders())) {
+
+		if ($providerId != "all") {
 			$qb->andWhere(
-				$qb->expr->in('provider_id', $request->getProviders(), IQueryBuilder::PARAM_STR)
+				$qb->expr()->eq('provider_id', $qb->createNamedParameter($providerId, IQueryBuilder::PARAM_STR))
 			);
 		}
 
-		// TODO: Match access, tags, whatnot...
+		$qb->andWhere(
+			$qb->expr()->orX(
+				$qb->expr()->eq('owner', $qb->createNamedParameter($access->getViewerId(), IQueryBuilder::PARAM_STR)),
+				'JSON_CONTAINS(access_users, ' . $qb->createNamedParameter(json_encode($access->getViewerId())) . ')',
+				'JSON_OVERLAPS(access_groups, ' . $qb->createNamedParameter(json_encode($access->getGroups())) . ')',
+				'JSON_OVERLAPS(access_circles, ' . $qb->createNamedParameter(json_encode($access->getCircles())) . ')',
+			)
+		);
+		// TODO: Match tags, subtags, whatnot...
 
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:

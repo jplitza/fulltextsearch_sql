@@ -251,7 +251,11 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 */
 	public function searchRequest(ISearchResult $result, IDocumentAccess $access) {
 		$starttime = hrtime(true);
-		$rawResults = $this->indexDocumentMapper->search($result->getRequest());
+		$rawResults = $this->indexDocumentMapper->search(
+			$result->getRequest(),
+			$result->getProvider()->getId(),
+			$access
+		);
 		$endtime = hrtime(true);
 		$result->setDocuments(array_map(
 			[$this, 'resultToIndexDocument'],
