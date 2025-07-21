@@ -298,7 +298,9 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @return IIndexDocument
 	 */
 	public function getDocument(string $providerId, string $documentId): IIndexDocument {
-		return $this->indexDocumentMapper->find($providerId, $documentId);
+		return $this->resultToIndexDocument(
+			$this->indexDocumentMapper->find($providerId, $documentId)
+		);
 	}
 
 
