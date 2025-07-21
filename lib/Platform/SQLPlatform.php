@@ -290,6 +290,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 		//$index->setHash($result['_source']['hash']);
 		//$index->setSource($result['_source']['source']);
 		$index->setTitle($result->getTitle());
+		$index->setScore(strval($result->getScore()));
 		//$index->setParts($result['_source']['parts']);
 		return $index;
 	}

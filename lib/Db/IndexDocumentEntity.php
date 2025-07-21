@@ -25,6 +25,7 @@ class IndexDocumentEntity extends Entity {
 	protected $link;
 	protected $title;
 	protected $content;
+    protected $score;
 
 	public function __construct() {
 		$this->addType('documentId', Types::STRING);
@@ -34,5 +35,6 @@ class IndexDocumentEntity extends Entity {
 		$this->addType('link', Types::STRING);
 		$this->addType('title', Types::STRING);
 		$this->addType('content', Types::BLOB);
+        $this->addType('score', Types::FLOAT);
 	}
 }

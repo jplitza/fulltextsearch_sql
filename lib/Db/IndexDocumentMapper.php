@@ -43,7 +43,7 @@ class IndexDocumentMapper extends QBMapper {
 	public function search(ISearchRequest $request) {
 		$qb = $this->db->getQueryBuilder();
 
-		$qb->select('*')
+		$qb->select('id', 'document_id', 'provider_id', 'modified', 'owner', 'link', 'title')
 			->from(self::TABLE);
 		
 		if (!in_array("all", $request->getProviders())) {
@@ -56,7 +56,9 @@ class IndexDocumentMapper extends QBMapper {
 
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:
-				$qb->andWhere('MATCH (content) AGAINST (:search IN BOOLEAN MODE)');
+                $q = 'MATCH (content) AGAINST (:search IN BOOLEAN MODE)';
+				$qb->andWhere($q)
+                    ->selectAlias($qb->createFunction($q), 'score');
 				break;
 			case IDBConnection::PLATFORM_POSTGRES:
 				$qb->andWhere('to_tsvector(content) @@ to_tsquery(:search)');
