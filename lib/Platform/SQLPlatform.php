@@ -345,6 +345,10 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	}
 
 	private function findSpace(string $haystack, int $offset, int $tolerance, bool $reverse = false) {
+		if ($offset > mb_strlen($haystack)) {
+			return $offset;
+		}
+
 		if ($reverse) {
 			$pos = mb_strrpos(mb_substr($haystack, 0, $offset), ' ');
 		} else {
