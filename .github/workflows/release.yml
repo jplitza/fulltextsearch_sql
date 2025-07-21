@@ -13,30 +13,44 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    if: ${{ github.repository_owner == 'jplitza' }}
+
     steps:
-    - uses: actions/checkout@v4
+      - name: Check actor permission
+        uses: skjnldsv/check-actor-permission@69e92a3c4711150929bca9fcf34448c5bf5526e7 # v3.0
+        with:
+          require: write
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      - name: Set app env
+        run: |
+          # Split and keep last
+          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - uses: actions/checkout@v4
+        with:
+          path: ${{ env.APP_NAME }}
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
 
-    - name: Create release archive
-      run: tar -czf ${{runner.temp}}/${{github.ref_name}}.tar.gz --exclude '.git*' --exclude 'composer.*' --exclude '*.tar.gz' .
-    
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: false
-        files: |
-          ${{runner.temp}}/${{github.ref_name}}.tar.gz
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Create release archive
+        run: tar -czf ${{runner.temp}}/${{env.APP_NAME}}.tar.gz --exclude '.git*' --exclude 'composer.*' .
+      
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            ${{runner.temp}}/${{env.APP_NAME}}.tar.gz
