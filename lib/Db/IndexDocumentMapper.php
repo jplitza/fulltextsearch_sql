@@ -17,7 +17,7 @@ use OCP\FullTextSearch\Model\IDocumentAccess;
 use OCA\FullTextSearch_SQL\Db\IndexDocumentEntity;
 
 class IndexDocumentMapper extends QBMapper {
-	private const TABLE = 'fts_documents';
+	public const TABLE = 'fts_documents';
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, self::TABLE, IndexDocumentEntity::class);
