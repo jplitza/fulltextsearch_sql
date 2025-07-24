@@ -29,7 +29,7 @@ Extension to the _Full text search_ app to communicate with the usual Nextcloud 
 	<dependencies>
 		<nextcloud min-version="31" max-version="32"/>
 		<database>mysql</database>
-		<database>postgresql</database>
+		<database>pgsql</database>
 	</dependencies>
 
 	<fulltextsearch>
