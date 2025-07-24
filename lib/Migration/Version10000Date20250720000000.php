@@ -16,6 +16,10 @@ use OCP\Migration\SimpleMigrationStep;
 
 class Version10000Date20250720000000 extends SimpleMigrationStep {
 	public const TABLE = 'fts_documents';
+	private $collations = [
+		IDBConnection::PLATFORM_MYSQL => 'utf8mb4_unicode_ci',
+		IDBConnection::PLATFORM_POSTGRES => 'unicode',
+	];
 
 	public function __construct(
 		private IDBConnection $db
@@ -44,28 +48,52 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 				'notnull' => true
 			]);
 			$table->addColumn('access_users', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('access_circles', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('access_groups', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('access_links', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('tags', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('metadata', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('subtags', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('parts', Types::JSON, [
-				'notnull' => true
+				'notnull' => true,
+				'customSchemaOptions' => [
+					'jsonb' => true,
+				]
 			]);
 			$table->addColumn('link', Types::STRING, [
 				'notnull' => true
@@ -76,7 +104,7 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			$table->addColumn('content', Types::TEXT, [
 				'notnull' => true,
 				'customSchemaOptions' => [
-					'collation' => 'utf8mb4_unicode_ci'
+					'collation' => $this->collations[$this->db->getDatabaseProvider()],
 				]
 			]);
 			$table->setPrimaryKey(['id']);

@@ -4,6 +4,7 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: Nextcloud ${{ matrix.nextcloud }} - ${{ matrix.db.name }}
     strategy:
       matrix:
         db:
@@ -12,6 +13,11 @@ jobs:
             username: root
             database: nextcloud
             port: 3306
+          - name: pgsql
+            image: postgres:17.5
+            username: postgres
+            database: postgres
+            port: 5432
         nextcloud: [31]
     services:
       db:
@@ -53,6 +59,14 @@ jobs:
       - name: Configure fulltextsearch_sql as platform
         run: >
           php occ -n fulltextsearch:configure '{"search_platform": "OCA\\FullTextSearch_SQL\\Platform\\SQLPlatform"}'
+
+      # This can be removed as soon as https://github.com/nextcloud/fulltextsearch/pull/915 is merged.
+      - name: Fix test harness
+        run: >
+          sed -i \
+            -e "s/'document is a simple test'/'document is a'/" \
+            -e "s/document is a simple -test/document -test/" \
+            custom_apps/fulltextsearch/lib/Command/Test.php
 
       - name: Run fulltextsearch test
         run: php occ -n fulltextsearch:test --platform_delay 1

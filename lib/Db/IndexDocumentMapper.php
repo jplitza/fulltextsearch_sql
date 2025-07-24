@@ -53,31 +53,43 @@ class IndexDocumentMapper extends QBMapper {
 			);
 		}
 
-		$qb->andWhere(
-			$qb->expr()->orX(
-				$qb->expr()->eq('owner', $qb->createNamedParameter($access->getViewerId(), IQueryBuilder::PARAM_STR)),
-				'JSON_CONTAINS(access_users, ' . $qb->createNamedParameter(json_encode($access->getViewerId())) . ')',
-				'JSON_OVERLAPS(access_groups, ' . $qb->createNamedParameter(json_encode($access->getGroups())) . ')',
-				'JSON_OVERLAPS(access_circles, ' . $qb->createNamedParameter(json_encode($access->getCircles())) . ')',
-			)
-		);
+		$search = $qb->createNamedParameter($request->getSearch(), IQueryBuilder::PARAM_STR);
+		$viewerId = $qb->createNamedParameter($access->getViewerId(), IQueryBuilder::PARAM_STR);
+		$jsonViewerId = $qb->createNamedParameter(json_encode($access->getViewerId()), IQueryBuilder::PARAM_STR);
+		$jsonGroups = $qb->createNamedParameter(json_encode($access->getGroups()), IQueryBuilder::PARAM_STR);
+		$jsonCircles = $qb->createNamedParameter(json_encode($access->getCircles()), IQueryBuilder::PARAM_STR);
+
 		// TODO: Match tags, subtags, whatnot...
 
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:
-				$q = 'MATCH (content) AGAINST (:search IN BOOLEAN MODE)';
+				$qb->andWhere(
+					$qb->expr()->orX(
+						$qb->expr()->eq('owner', $viewerId),
+						"JSON_CONTAINS(access_users, $jsonViewerId)",
+						"JSON_OVERLAPS(access_groups, $jsonGroups)",
+						"JSON_OVERLAPS(access_circles, $jsonCircles)",
+					)
+				);
+
+				$q = "MATCH (content) AGAINST ($search IN BOOLEAN MODE)";
 				$qb->andWhere($q)
 					->selectAlias($qb->createFunction($q), 'score');
 				break;
+
 			case IDBConnection::PLATFORM_POSTGRES:
-				$qb->andWhere('to_tsvector(content) @@ to_tsquery(:search)');
-				break;
-			case IDBConnection::PLATFORM_SQLITE:
-				break;
-			case IDBConnection::PLATFORM_ORACLE:
+				$qb
+					->andWhere(
+						$qb->expr()->orX(
+							$qb->expr()->eq('owner', $viewerId),
+							"access_users @> $jsonViewerId::jsonb",
+							"jsonb_exists_any(access_groups, JSON_QUERY($jsonGroups, '$' RETURNING text[]))",
+							"jsonb_exists_any(access_circles, JSON_QUERY($jsonCircles, '$' RETURNING text[]))",
+						)
+					)
+					->andWhere("to_tsvector(content) @@ websearch_to_tsquery($search)");
 				break;
 		}
-		$qb->setParameter('search', $request->getSearch());
 
 		return $this->findEntities($qb);
 	}
