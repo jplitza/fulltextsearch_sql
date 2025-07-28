@@ -224,7 +224,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					$pdf = $parser->parseContent($content);
 					$content = $pdf->getText();
 				}
-				$indexDocument->setContent($content);
+				$indexDocument->setContent(str_replace("\0", "", $content));
 
 				if ($indexDocument->getId()) {
 					$this->indexDocumentMapper->update($indexDocument);
