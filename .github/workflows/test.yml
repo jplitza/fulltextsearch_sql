@@ -9,16 +9,17 @@ jobs:
       matrix:
         db:
           - name: mysql
-            image: mariadb:11.4
+            image: mariadb:11
             username: root
             database: nextcloud
             port: 3306
           - name: pgsql
-            image: postgres:17.5
+            image: postgres:17
             username: postgres
             database: postgres
             port: 5432
-        nextcloud: [31]
+        nextcloud:
+        - "31"
     services:
       db:
         image: ${{ matrix.db.image }}

@@ -2,5 +2,29 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "customManagers": [
+    {
+      "customType": "jsonata",
+      "fileFormat": "yaml",
+      "managerFilePatterns": [
+        "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
+        "/(^|/)action\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "$map(jobs.*.strategy.matrix.*.image, function ($v) { $split($v, \":\")}).{ \"depName\": $[0], \"currentValue\": $[1] }",
+        "jobs.*.strategy.matrix.nextcloud[-1].{ \"depName\": \"nextcloud\", \"currentValue\": $ }"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["appinfo/info.xml"],
+      "matchStrings": [
+        "max-version=\"(?<currentValue>\\d+)\""
+      ],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "nextcloud"
+    }
   ]
 }
