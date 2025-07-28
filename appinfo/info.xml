@@ -27,7 +27,7 @@ Extension to the _Full text search_ app to communicate with the usual Nextcloud 
 	<bugs>https://github.com/jplitza/fulltextsearch_sql/issues</bugs>
 	<repository>https://github.com/jplitza/fulltextsearch_sql.git</repository>
 	<dependencies>
-		<nextcloud min-version="31" max-version="32"/>
+		<nextcloud min-version="31" max-version="31"/>
 		<database>mysql</database>
 		<database>pgsql</database>
 	</dependencies>
