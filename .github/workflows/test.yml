@@ -35,7 +35,24 @@ jobs:
         with:
           path: apps/fulltextsearch_sql
 
-      # We only need external dependencies for PDF processing, so we can skip the composer install step.
+      # The nextcloud container doesn't have `node`, so the cache action cannot execute
+      # - name: Cache Composer packages
+      #   id: composer-cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: apps/fulltextsearch_sql/vendor
+      #     key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-php-
+
+      - name: Install composer
+        run: curl -sSf https://raw.githubusercontent.com/composer/getcomposer.org/f3108f64b4e1c1ce6eb462b159956461592b3e3e/web/installer | php -- --install-dir /usr/local/bin
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+
+      - name: Install dependencies
+        run: composer.phar install --prefer-dist --no-progress
+        working-directory: apps/fulltextsearch_sql
+        if: steps.composer-cache.outputs.cache-hit != 'true'
 
       - name: Wait for database to get ready
         run: while ! bash -c "echo -n > /dev/tcp/db/${{ matrix.db.port }}" 2> /dev/null; do sleep 1; done
@@ -70,3 +87,17 @@ jobs:
 
       - name: Run fulltextsearch test
         run: php occ -n fulltextsearch:test --platform_delay 1
+
+      - name: Enable files_fulltextsearch provider
+        run: php occ app:enable files_fulltextsearch
+
+      - name: Identify test document
+        run: >
+          php occ info:file '/admin/files/Nextcloud Manual.pdf' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
+
+      - name: Index test document
+        run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
+      
+      - name: Search for test document
+        run: php occ fulltextsearch:search admin Nextcloud | grep -- "^ - $TEST_DOC score:"
+      
