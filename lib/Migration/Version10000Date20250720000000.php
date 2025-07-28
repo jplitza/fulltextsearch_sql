@@ -98,8 +98,9 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			$table->addColumn('link', Types::STRING, [
 				'notnull' => true
 			]);
-			$table->addColumn('title', Types::STRING, [
-				'notnull' => true
+			$table->addColumn('title', Types::TEXT, [
+				'notnull' => true,
+				'length' => 4096,
 			]);
 			$table->addColumn('content', Types::TEXT, [
 				'notnull' => true,
