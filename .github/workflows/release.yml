@@ -44,7 +44,21 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Create release archive
-        run: tar -czf ${{runner.temp}}/${{env.APP_NAME}}.tar.gz --exclude '.git*' --exclude 'composer.*' --exclude 'renovate.json' --transform 's/^\./${{env.APP_NAME}}/' .
+        run: >
+          tar -cf - \
+            --exclude '.git*' \
+            --exclude 'composer.*' \
+            --exclude 'renovate.json' \
+            --transform 's/^\./${{env.APP_NAME}}/' \
+            --sort=name \
+            --format=posix \
+            --pax-option='delete=atime,delete=ctime' \
+            --mtime="$(git show --no-patch --format=%ci HEAD)" \
+            --numeric-owner --owner=0 --group=0 \
+            --mode='go+u,go-w' \
+            . \
+            | gzip --no-name --best \
+            > ${{runner.temp}}/${{env.APP_NAME}}.tar.gz
       
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
