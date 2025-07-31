@@ -66,3 +66,20 @@ jobs:
           prerelease: false
           files: |
             ${{runner.temp}}/${{env.APP_NAME}}.tar.gz
+
+      - name: Update app in Nextcloud app catalog
+        run: |
+          echo "$KEY" > "$RUNNER_TEMP/$APP_NAME.key"
+          curl -X POST \
+            -H "Authorization: Token $TOKEN" \
+            https://apps.nextcloud.com/api/v1/apps/releases \
+            -H "Content-Type: application/json" \
+            -d@- <<EOF
+          {
+            "download": "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/$APP_NAME.tar.gz",
+            "signature": "$(openssl dgst -sha512 -sign "$RUNNER_TEMP/$APP_NAME.key" "$RUNNER_TEMP/$APP_NAME.tar.gz" | openssl base64)"
+          }
+          EOF
+        env:
+          TOKEN: ${{ secrets.NEXTCLOUD_APPSTORE_API_TOKEN }}
+          KEY: ${{ secrets.NEXTCLOUD_APPSTORE_KEY }}
