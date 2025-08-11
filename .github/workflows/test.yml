@@ -32,7 +32,7 @@ jobs:
       - name: Copy Nextcloud source
         run: ln -s /usr/src/nextcloud/* ${GITHUB_WORKSPACE}/
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: apps/fulltextsearch_sql
 
