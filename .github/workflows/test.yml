@@ -9,7 +9,7 @@ jobs:
       matrix:
         db:
           - name: mysql
-            image: mariadb:11
+            image: mariadb:12
             username: root
             database: nextcloud
             port: 3306
