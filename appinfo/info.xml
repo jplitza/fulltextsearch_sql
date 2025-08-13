@@ -8,11 +8,14 @@
 	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
 	<id>fulltextsearch_sql</id>
 	<name>Full text search - SQL Platform</name>
-	<summary>Index using Nextcloud database</summary>
+	<summary>Index content using Nextcloud database</summary>
 	<description><![CDATA[
 
-Extension to the _Full text search_ app to communicate with the usual Nextcloud database.
+Makes the _Full text search_ app work without any additional services.
 
+It uses the Nextcloud MySQL or PostgreSQL database backend as search provider.
+
+Currently can not index office document formats, but does work with PDFs (if they contain text/have been OCR'ed).
 ]]>
 	</description>
 	<version>1.0.0</version>

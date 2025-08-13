@@ -58,7 +58,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @return string
 	 */
 	public function getName(): string {
-		return 'Nextcloud database';
+		return 'Nextcloud database (SQL)';
 	}
 
 
