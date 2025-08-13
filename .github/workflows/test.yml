@@ -78,6 +78,9 @@ jobs:
         run: >
           php occ -n fulltextsearch:configure '{"search_platform": "OCA\\FullTextSearch_SQL\\Platform\\SQLPlatform"}'
 
+      - name: Output fulltextsearch_sql settings
+        run: php occ -n fulltextsearch:check
+
       # This can be removed as soon as https://github.com/nextcloud/fulltextsearch/pull/915 is merged.
       - name: Fix test harness
         run: >

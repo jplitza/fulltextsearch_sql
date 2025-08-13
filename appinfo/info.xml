@@ -32,6 +32,10 @@ Extension to the _Full text search_ app to communicate with the usual Nextcloud 
 		<database>pgsql</database>
 	</dependencies>
 
+	<settings>
+		<admin>OCA\FullTextSearch_SQL\Settings\Admin</admin>
+	</settings>
+
 	<fulltextsearch>
 		<platform>OCA\FullTextSearch_SQL\Platform\SQLPlatform</platform>
 	</fulltextsearch>

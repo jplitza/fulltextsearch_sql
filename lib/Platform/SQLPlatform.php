@@ -21,13 +21,16 @@ use OCP\FullTextSearch\Model\IRunner;
 use OCP\FullTextSearch\Model\ISearchResult;
 use OCA\FullTextSearch_SQL\Db\IndexDocumentEntity;
 use OCA\FullTextSearch_SQL\Db\IndexDocumentMapper;
+use OCA\FullTextSearch_SQL\Service\ConfigService;
 
 class SQLPlatform implements IFullTextSearchPlatform {
 	private ?IRunner $runner = null;
-	private IDBConnection $db;
-	private IndexDocumentMapper $indexDocumentMapper;
 
-	public function __construct(IDBConnection $db, IndexDocumentMapper $indexDocumentMapper) {
+	public function __construct(
+		private ConfigService $configService,
+		private IDBConnection $db,
+		private IndexDocumentMapper $indexDocumentMapper
+	) {
 		$this->db = $db;
 		$this->indexDocumentMapper = $indexDocumentMapper;
 	}
@@ -69,7 +72,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @return array
 	 */
 	public function getConfiguration(): array {
-		return [];
+		return $this->configService->getConfig();
 	}
 
 
@@ -225,8 +228,8 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					$content = $pdf->getText();
 				}
 				$content = str_replace("\0", "", $content);
-				# TODO: Make source encodings configurable
-				$content = mb_convert_encoding($content, "UTF-8", "UTF-8,ISO-8859-1");
+				$encodings = $this->configService->getAppValueString(ConfigService::ENCODINGS);
+				$content = mb_convert_encoding($content, "UTF-8", $encodings);
 				$indexDocument->setContent($content);
 
 				if ($indexDocument->getId()) {
@@ -283,8 +286,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 		$result->setTotal(count($rawResults));
 		$result->setTime(intval(($endtime - $starttime) / 1e6));
 
-		// TODO: make configurable
-		$contextlen = 30;
+		$contextlen = $this->configService->getAppValueInt("excerpt_context");
 		foreach ($result->getDocuments() as $document) {
 			$content = $document->getContent();
 			if (preg_match_all('/\w+/', $result->getRequest()->getSearch(), $matches, PREG_PATTERN_ORDER)) {
