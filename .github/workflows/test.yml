@@ -3,6 +3,13 @@ on:
   push:
     branches:
       - '**'
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - renovate.json
+      - .gitignore
+      - appinfo/info.xml
+      - .github/workflows/release.yml
   workflow_call:
 
 jobs:
