@@ -95,13 +95,25 @@ jobs:
       - name: Enable files_fulltextsearch provider
         run: php occ app:enable files_fulltextsearch
 
-      - name: Identify test document
+      - name: Identify test PDF document
         run: >
           php occ info:file '/admin/files/Nextcloud Manual.pdf' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
 
-      - name: Index test document
+      - name: Index test PDF document
         run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
       
-      - name: Search for test document
+      - name: Search for test PDF document
         run: php occ fulltextsearch:search admin Nextcloud | grep -- "^ - $TEST_DOC score:"
       
+      - name: Create test ISO-8859-1 document
+        run: echo -e "F\xFCr Testzwecke" | php occ files:put - /admin/files/iso-8859-1.txt
+
+      - name: Identify test ISO-8859-1 document
+        run: >
+          php occ info:file '/admin/files/iso-8859-1.txt' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
+      
+      - name: Index test ISO-8859-1 document
+        run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
+      
+      - name: Search for test ISO-8859-1 document
+        run: php occ fulltextsearch:search admin Testzwecke | grep -- "^ - $TEST_DOC score:"
