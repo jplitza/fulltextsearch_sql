@@ -224,7 +224,10 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					$pdf = $parser->parseContent($content);
 					$content = $pdf->getText();
 				}
-				$indexDocument->setContent(str_replace("\0", "", $content));
+				$content = str_replace("\0", "", $content);
+				# TODO: Make source encodings configurable
+				$content = mb_convert_encoding($content, "UTF-8", "UTF-8,ISO-8859-1");
+				$indexDocument->setContent($content);
 
 				if ($indexDocument->getId()) {
 					$this->indexDocumentMapper->update($indexDocument);
