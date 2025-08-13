@@ -18,7 +18,7 @@ It uses the Nextcloud MySQL or PostgreSQL database backend as search provider.
 Currently can not index office document formats, but does work with PDFs (if they contain text/have been OCR'ed).
 ]]>
 	</description>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<licence>agpl</licence>
 	<author>Jan-Philipp litza</author>
 	<namespace>FullTextSearch_SQL</namespace>
