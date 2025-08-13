@@ -37,7 +37,7 @@ Util::addScript(Application::APP_NAME, 'admin');
 			<div class="div-table-col div-table-col-left">
 				<span class="leftcol"><?php p($l->t('Excerpt Context')); ?>:</span>
 				<br/>
-				<em><?php p($l->t('Number of characters to include before and after matching phrase in excerpts returned to the user.')); ?></em>
+				<em><?php p($l->t('Approximate number of characters to include before and after matching phrase in excerpts returned to the user.')); ?></em>
 			</div>
 			<div class="div-table-col">
 				<input type="text" id="excerpt_context" placeholder="30"/>
