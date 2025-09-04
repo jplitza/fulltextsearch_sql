@@ -87,7 +87,7 @@ class IndexDocumentMapper extends QBMapper {
 							"jsonb_exists_any(access_circles, JSON_QUERY($jsonCircles, '$' RETURNING text[]))",
 						)
 					)
-					->andWhere("to_tsvector(content) @@ websearch_to_tsquery($search)");
+					->andWhere("to_tsvector('english', content) @@ websearch_to_tsquery($search)");
 				break;
 		}
 
