@@ -226,7 +226,13 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					$parser = new \Smalot\PdfParser\Parser([], $config); 
 					$pdf = $parser->parseContent($content);
 					$content = $pdf->getText();
+				} elseif (
+					str_starts_with($content, "<mxfile ") // draw.io file
+					|| !mb_detect_encoding($content, "UTF-8", true) // binary file
+				) {
+					$content = '';
 				}
+				
 				$content = str_replace("\0", "", $content);
 				$encodings = $this->configService->getAppValueString(ConfigService::ENCODINGS);
 				$content = mb_convert_encoding($content, "UTF-8", $encodings);
