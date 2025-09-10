@@ -16,6 +16,8 @@ Makes the _Full text search_ app work without any additional services.
 It uses the Nextcloud MySQL or PostgreSQL database backend as search provider.
 
 Currently can not index office document formats, but does work with PDFs (if they contain text/have been OCR'ed).
+
+**Warning:** This app will store all indexed content in your Nextcloud database *twice* (roughly) - once as plain text and once as searchable index. This means that your database can easily grow hundreds of megabytes or even gigabytes in size if you have much indexable content (e.g. documents).
 ]]>
 	</description>
 	<version>1.1.0</version>

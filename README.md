@@ -4,6 +4,8 @@ This is an extension to the *Full text search*  framework.
 
 It allows you to index your content into the usual Nextcloud database.
 
+**Warning:** This app will store all indexed content in your Nextcloud database *twice* (roughly) - once as plain text and once as searchable index. This means that your database can easily grow hundreds of megabytes or even gigabytes in size if you have much indexable content (e.g. documents).
+
 ## Compatibility
 
 The extension requires your Nextcloud database to be MySQL or PostgreSQL.
