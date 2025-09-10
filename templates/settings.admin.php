@@ -26,7 +26,7 @@ Util::addScript(Application::APP_NAME, 'admin');
 			<div class="div-table-col div-table-col-left">
 				<span class="leftcol"><?php p($l->t('Encodings')); ?>:</span>
 				<br/>
-				<em><?php print_unescaped($l->t('Comma separated list of encodings from %1$sthis list%2$s that the app will try to detect during indexing of content.', ['<a href="https://www.php.net/manual/en/mbstring.supported-encodings.php">', '</a>'])); ?></em>
+				<em><?php print_unescaped($l->t('Comma separated list of encodings from %1$sthis list%2$s that the app will try to detect during indexing of content.<br>Note that including anything other than UTF-8 can cause binary files to be indexed unintentionally.', ['<a href="https://www.php.net/manual/en/mbstring.supported-encodings.php">', '</a>'])); ?></em>
 			</div>
 			<div class="div-table-col">
 				<input type="text" id="encodings" placeholder="UTF-8,ISO-8859-1"/>
