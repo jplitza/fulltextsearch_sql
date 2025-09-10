@@ -228,8 +228,12 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					$content = $pdf->getText();
 				}
 				$content = str_replace("\0", "", $content);
-				$encodings = $this->configService->getAppValueString(ConfigService::ENCODINGS);
-				$content = mb_convert_encoding($content, "UTF-8", $encodings);
+				$possible_encodings = $this->configService->getAppValueString(ConfigService::ENCODINGS);
+				$detected_encoding = mb_detect_encoding($content, $possible_encodings, true);
+				if ($detected_encoding === false) {
+					throw new \UnexpectedValueException("None of the configured encodinges ($possible_encodings) matched.");
+				}
+				$content = mb_convert_encoding($content, "UTF-8", $detected_encoding);
 				$indexDocument->setContent($content);
 
 				if ($indexDocument->getId()) {
