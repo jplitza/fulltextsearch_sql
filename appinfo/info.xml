@@ -37,6 +37,12 @@ Currently can not index office document formats, but does work with PDFs (if the
 		<database>pgsql</database>
 	</dependencies>
 
+	<repair-steps>
+		<pre-migration>
+			<step>OCA\FullTextSearch_SQL\Migration\RemoveLeftoverDocuments</step>
+		</pre-migration>
+	</repair-steps>
+
 	<settings>
 		<admin>OCA\FullTextSearch_SQL\Settings\Admin</admin>
 	</settings>

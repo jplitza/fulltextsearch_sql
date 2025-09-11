@@ -151,6 +151,11 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @param string $providerId
 	 */
 	public function resetIndex(string $providerId) {
+		if ($providerId == 'all') {
+			$this->indexDocumentMapper->deleteAll();
+		} else {
+			$this->indexDocumentMapper->deleteDocument($providerId);
+		}
 	}
 
 
@@ -164,6 +169,16 @@ class SQLPlatform implements IFullTextSearchPlatform {
 	 * @param IIndex[] $indexes
 	 */
 	public function deleteIndexes(array $indexes) {
+		foreach ($indexes as $index) {
+			try {
+				$this->indexDocumentMapper->deleteDocument($index->getProviderId(), $index->getDocumentId());
+				$this->updateNewIndexResult($index, 'index deleted', 'success', IRunner::RESULT_TYPE_SUCCESS);
+			} catch (Exception $e) {
+				$this->updateNewIndexResult(
+					$index, 'index not deleted', 'issue while deleting index', IRunner::RESULT_TYPE_WARNING
+				);
+			}
+		}
 	}
 
 
@@ -184,12 +199,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 
 		try {
 			if ($index->isStatus(IIndex::INDEX_REMOVE)) {
-				$this->indexDocumentMapper->delete(
-					$this->indexDocumentMapper->find(
-						$document->getProviderId(),
-						$document->getId(),
-					)
-				);
+				$this->indexDocumentMapper->deleteDocument($document->getProviderId(), $document->getId());
 			} else {
 				try {
 					$indexDocument = $this->indexDocumentMapper->find(

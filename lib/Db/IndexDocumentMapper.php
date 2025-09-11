@@ -23,22 +23,49 @@ class IndexDocumentMapper extends QBMapper {
 		parent::__construct($db, self::TABLE, IndexDocumentEntity::class);
 	}
 
-	public function find(string $providerId, string $documentId) {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from(self::TABLE)
-			->where(
-				$qb->expr()->eq('document_id', $qb->createNamedParameter($documentId, IQueryBuilder::PARAM_STR))
-			);
-		
+	private function addQueryWhere(IQueryBuilder $qb, string $providerId, ?string $documentId) {
 		if ($providerId != "all") {
 			$qb->andWhere(
 				$qb->expr()->eq('provider_id', $qb->createNamedParameter($providerId, IQueryBuilder::PARAM_STR))
 			);
 		}
 
+		if ($documentId != NULL) {
+			$qb->andWhere(
+				$qb->expr()->eq('document_id', $qb->createNamedParameter($documentId, IQueryBuilder::PARAM_STR))
+			);
+		}
+	}
+
+	public function find(string $providerId, string $documentId) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from(self::TABLE);
+		
+		$this->addQueryWhere($qb, $providerId, $documentId);
+
 		return $this->findEntity($qb);
+	}
+
+	public function deleteDocument(string $providerId, ?string $documentId = NULL) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->delete(self::TABLE);
+
+		$this->addQueryWhere($qb, $providerId, $documentId);
+
+		$qb->executeStatement();
+	}
+
+	public function deleteAll() {
+		if (method_exists($this->db, 'truncateTable')) {
+			$this->db->truncateTable(self::TABLE, false);
+		} else {
+			$qb = $this->db->getQueryBuilder();
+			$qb->delete(self::TABLE);
+			$qb->executeStatement();
+		}
 	}
 
 	public function search(ISearchRequest $request, string $providerId, IDocumentAccess $access) {
@@ -92,10 +119,5 @@ class IndexDocumentMapper extends QBMapper {
 		}
 
 		return $this->findEntities($qb);
-	}
-
-	public function deleteAll() {
-		$qb = $this->qb->getQueryBuilder();
-		$qb->truncate();
 	}
 }
