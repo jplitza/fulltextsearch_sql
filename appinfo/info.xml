@@ -22,7 +22,7 @@ Currently can not index office document formats, but does work with PDFs (if the
 	</description>
 	<version>1.1.0</version>
 	<licence>agpl</licence>
-	<author>Jan-Philipp litza</author>
+	<author>Jan-Philipp Litza</author>
 	<namespace>FullTextSearch_SQL</namespace>
 	<documentation>
 		<admin>https://github.com/jplitza/fulltextsearch_sql/wiki</admin>
