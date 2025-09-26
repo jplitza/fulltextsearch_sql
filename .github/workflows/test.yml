@@ -25,7 +25,7 @@ jobs:
             database: nextcloud
             port: 3306
           - name: pgsql
-            image: postgres:17
+            image: postgres:18
             username: postgres
             database: postgres
             port: 5432
