@@ -30,6 +30,7 @@ jobs:
             database: postgres
             port: 5432
         nextcloud:
+        - "31"
         - "32"
     services:
       db:
