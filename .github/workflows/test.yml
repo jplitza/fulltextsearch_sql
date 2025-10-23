@@ -114,7 +114,8 @@ jobs:
         run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
       
       - name: Search for test PDF document
-        run: php occ fulltextsearch:search admin Nextcloud | grep -- "^ - $TEST_DOC score:"
+        run: >
+          php occ fulltextsearch:search admin Nextcloud | grep -e "^ - $TEST_DOC score:" -e "^ *\* id: $TEST_DOC"
       
       - name: Create test ISO-8859-1 document
         run: echo -e "F\xFCr Testzwecke" | php occ files:put - /admin/files/iso-8859-1.txt
@@ -127,4 +128,5 @@ jobs:
         run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
       
       - name: Search for test ISO-8859-1 document
-        run: php occ fulltextsearch:search admin Testzwecke | grep -- "^ - $TEST_DOC score:"
+        run: >
+          php occ fulltextsearch:search admin Testzwecke | grep -e "^ - $TEST_DOC score:" -e "^ *\* id: $TEST_DOC"
