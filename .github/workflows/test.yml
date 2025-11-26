@@ -19,12 +19,20 @@ jobs:
     strategy:
       matrix:
         db:
-          - name: mysql
+          - name: mariadb
+            type: mysql
             image: mariadb:10.9
             username: root
             database: nextcloud
             port: 3306
+          - name: mysql
+            type: mysql
+            image: mysql:8.0
+            username: root
+            database: nextcloud
+            port: 3306
           - name: pgsql
+            type: pgsql
             image: postgres:17
             username: postgres
             database: postgres
@@ -37,6 +45,7 @@ jobs:
         image: ${{ matrix.db.image }}
         env:
           MARIADB_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
           POSTGRES_PASSWORD: password
     container:
       image: nextcloud:${{ matrix.nextcloud }}
@@ -74,7 +83,7 @@ jobs:
         run: >
           php occ -n maintenance:install \
             --admin-pass=admin \
-            --database=${{ matrix.db.name }} \
+            --database=${{ matrix.db.type }} \
             --database-host=db \
             --database-user=${{ matrix.db.username }} \
             --database-pass=password \
@@ -109,7 +118,7 @@ jobs:
 
       - name: Identify test PDF document
         run: >
-          php occ info:file '/admin/files/Nextcloud Manual.pdf' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
+          php occ info:file '/admin/files/Documents/Nextcloud flyer.pdf' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
 
       - name: Index test PDF document
         run: php occ fulltextsearch:document:index admin files "$TEST_DOC"

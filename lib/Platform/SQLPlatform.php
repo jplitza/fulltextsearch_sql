@@ -13,6 +13,7 @@ use OC\FullTextSearch\Model\IndexDocument;
 use OC\FullTextSearch\Model\DocumentAccess;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\FullTextSearch\IFullTextSearchPlatform;
 use OCP\FullTextSearch\Model\IDocumentAccess;
 use OCP\FullTextSearch\Model\IIndex;
@@ -128,15 +129,27 @@ class SQLPlatform implements IFullTextSearchPlatform {
 		// But sadly, changeSchema() doesn't have access to the table if the current run should create it, and postSchemaChange() isn't executed when first enabling the app.
 
 		$tablename = $this->db->getQueryBuilder()->prefixTableName(IndexDocumentMapper::TABLE);
+		$indexname = IndexDocumentMapper::TABLE . "_content";
 		switch ($this->db->getDatabaseProvider()) {
 			case IDBConnection::PLATFORM_MYSQL:
-				$this->db->executeQuery("ALTER TABLE " . $tablename . " ADD FULLTEXT INDEX IF NOT EXISTS " . IndexDocumentMapper::TABLE . "_content (content)");
+				// This query cannot be built via QueryBuilder because $tablename contains *PREFIX*,
+				// which must be present in the query itself, not in parameters.
+				$result = $this->db->executeQuery("
+					SELECT COUNT(*)
+					FROM INFORMATION_SCHEMA.STATISTICS
+					WHERE TABLE_SCHEMA = DATABASE()
+					  AND TABLE_NAME = '" . $tablename . "'
+					  AND INDEX_NAME = '" . $indexname . "'
+				");
+				if ($result->fetchOne() === 0) {
+					$this->db->executeQuery("ALTER TABLE " . $tablename . " ADD FULLTEXT INDEX " . $indexname . " (content)");
+				}
 				// Apparently if we don't set this, Nextcloud decides to set it during the next repair, while *also* overwriting our collation!
 				$this->db->executeQuery("ALTER TABLE " . $tablename . " ROW_FORMAT = DYNAMIC;");
 				break;
 			case IDBConnection::PLATFORM_POSTGRES:
 				// TODO: Make language configurable
-				$this->db->executeQuery("CREATE INDEX IF NOT EXISTS " . IndexDocumentMapper::TABLE . "_content ON " . $tablename . " USING GIN (to_tsvector('english', content))");
+				$this->db->executeQuery("CREATE INDEX IF NOT EXISTS " . $indexname . " ON " . $tablename . " USING GIN (to_tsvector('english', content))");
 				break;
 		}
 	}
