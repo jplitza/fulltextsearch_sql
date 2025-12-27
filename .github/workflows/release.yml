@@ -28,7 +28,7 @@ jobs:
           # Split and keep last
           echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
