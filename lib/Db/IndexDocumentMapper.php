@@ -72,7 +72,9 @@ class IndexDocumentMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from(self::TABLE);
+			->from(self::TABLE)
+			->setFirstResult(($request->getPage() - 1) * $request->getSize())
+			->setMaxResults($request->getSize());
 
 		if ($providerId != "all") {
 			$qb->andWhere(
