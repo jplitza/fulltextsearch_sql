@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.1] - 2025-12-28
+
+### Fixed
+
+- MySQL: Also convert existing indexed documents to lowercase.
+
 ## [1.3.0] - 2025-12-28
 
 ### Changed
