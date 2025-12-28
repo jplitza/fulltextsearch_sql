@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.2] - 2025-12-28
+
+### Fixed
+
+- Repair broken database migration.
+
 ## [1.3.1] - 2025-12-28
 
 ### Fixed

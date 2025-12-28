@@ -20,7 +20,7 @@ Currently can not index office document formats, but does work with PDFs (if the
 **Warning:** This app will store all indexed content in your Nextcloud database *twice* (roughly) - once as plain text and once as searchable index. This means that your database can easily grow hundreds of megabytes or even gigabytes in size if you have much indexable content (e.g. documents).
 ]]>
 	</description>
-	<version>1.3.1</version>
+	<version>1.3.2</version>
 	<licence>agpl</licence>
 	<author>Jan-Philipp Litza</author>
 	<namespace>FullTextSearch_SQL</namespace>
