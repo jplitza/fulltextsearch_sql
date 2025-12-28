@@ -15,7 +15,7 @@ use OCP\DB\Types;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
 
-class Version10000Date20251228000000 extends SimpleMigrationStep {
+class Version10001Date20251228000000 extends SimpleMigrationStep {
 	public const TABLE = 'fts_documents';
 
 	public function __construct(
@@ -24,7 +24,7 @@ class Version10000Date20251228000000 extends SimpleMigrationStep {
 	}
 
 	public function postSchemaChange(IOutput $output, \Closure $schemaClosure, array $options) {
-		if ($this->db->getDatabaseProvider() != IDBConnection::PLATTFORM_MYSQL) {
+		if ($this->db->getDatabaseProvider() != IDBConnection::PLATFORM_MYSQL) {
 			return;
 		}
 
