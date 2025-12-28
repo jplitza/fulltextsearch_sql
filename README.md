@@ -20,6 +20,7 @@ What works:
     * This is done by extracting the text via [Smalot/PdfParser].
     * This app itself does *NOT* do optical chracter recognition (OCR)! If your files don't already contain the extracted text, maybe the [files_fulltextsearch_tesseract] app is for you. I haven't tested it together with this app.
 * MySQL (tested in CI pipeline and in real world usage)
+    * Content has to be stored lower case in order for the search to be case-insensitive. This causes excerpts in the search result to always be lower case. This workaround is required due to restrictions Nextcloud imposes on the database, namely the being changed from `utf8mb4_unicode_ci` to `utf8mb4_binary` *on every update*.
 * PostgreSQL (tested in CI pipeline)
     * Plainly assumes "english" configuration (which influences stopwords and normalization)
 * Basic searching

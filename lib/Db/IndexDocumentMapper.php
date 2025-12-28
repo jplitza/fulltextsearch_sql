@@ -82,7 +82,12 @@ class IndexDocumentMapper extends QBMapper {
 			);
 		}
 
-		$search = $qb->createNamedParameter($request->getSearch(), IQueryBuilder::PARAM_STR);
+		if ($this->db->getDatabaseProvider() == IDBConnection::PLATFORM_MYSQL) {
+			$searchterm = strtolower($request->getSearch());
+		} else {
+			$searchterm = $request->getSearch();
+		}
+		$search = $qb->createNamedParameter($searchterm, IQueryBuilder::PARAM_STR);
 		$viewerId = $qb->createNamedParameter($access->getViewerId(), IQueryBuilder::PARAM_STR);
 		$jsonViewerId = $qb->createNamedParameter(json_encode($access->getViewerId()), IQueryBuilder::PARAM_STR);
 		$jsonGroups = $qb->createNamedParameter(json_encode($access->getGroups()), IQueryBuilder::PARAM_STR);

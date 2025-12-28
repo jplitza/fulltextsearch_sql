@@ -139,4 +139,4 @@ jobs:
       
       - name: Search for test ISO-8859-1 document
         run: >
-          php occ fulltextsearch:search admin Testzwecke | grep -e "^ - $TEST_DOC score:" -e "^ *\* id: $TEST_DOC"
+          php occ fulltextsearch:search admin testzwecke | grep -e "^ - $TEST_DOC score:" -e "^ *\* id: $TEST_DOC"

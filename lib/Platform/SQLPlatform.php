@@ -257,6 +257,10 @@ class SQLPlatform implements IFullTextSearchPlatform {
 					throw new \UnexpectedValueException("None of the configured encodinges ($possible_encodings) matched.");
 				}
 				$content = mb_convert_encoding($content, "UTF-8", $detected_encoding);
+				if ($this->db->getDatabaseProvider() == IDBConnection::PLATFORM_MYSQL) {
+					// Work around Nextcloud collation issues
+					$content = strtolower($content);
+				}
 				$indexDocument->setContent($content);
 
 				if ($indexDocument->getId()) {

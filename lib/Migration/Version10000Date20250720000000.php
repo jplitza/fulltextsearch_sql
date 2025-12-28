@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OCA\FullTextSearch_SQL\Migration;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\DB\Types;
 use OCP\Migration\IOutput;
@@ -16,18 +17,22 @@ use OCP\Migration\SimpleMigrationStep;
 
 class Version10000Date20250720000000 extends SimpleMigrationStep {
 	public const TABLE = 'fts_documents';
-	private $collations = [
-		IDBConnection::PLATFORM_MYSQL => 'utf8mb4_unicode_ci',
-		IDBConnection::PLATFORM_POSTGRES => 'unicode',
-	];
+	private IConfig $config;
 
 	public function __construct(
-		private IDBConnection $db
+		private IDBConnection $db,
+		IConfig $config,
 	) {
+		$this->config = $config;
 	}
 
 	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
 		$schema = $schemaClosure();
+		$collations = [
+			IDBConnection::PLATFORM_MYSQL => ($this->config->getSystemValueBool('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8') . '_bin',
+			IDBConnection::PLATFORM_POSTGRES => 'unicode',
+		];
+
 		if (!$schema->hasTable(self::TABLE)) {
 			$table = $schema->createTable(self::TABLE);
 			$table->addColumn('id', Types::BIGINT, [
@@ -105,7 +110,7 @@ class Version10000Date20250720000000 extends SimpleMigrationStep {
 			$table->addColumn('content', Types::TEXT, [
 				'notnull' => true,
 				'customSchemaOptions' => [
-					'collation' => $this->collations[$this->db->getDatabaseProvider()],
+					'collation' => $collations[$this->db->getDatabaseProvider()],
 				]
 			]);
 			$table->setPrimaryKey(['id']);
