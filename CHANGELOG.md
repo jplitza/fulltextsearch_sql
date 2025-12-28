@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0] - 2025-12-28
+
+### Changed
+
+- MySQL: Always store lowercase content in order to enable case-insensitive search after updates (#12).
+
+### Fixed
+
+- Paginate search results (#20).
+- Correctly create index on MySQL (#29).
+
 ## [1.2.1] - 2025-10-23
 
 ### Fixed
