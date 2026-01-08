@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.3] - 2026-01-08
+
+### Fixed
+
+- Security update of PDF parsing library.
+
 ## [1.3.2] - 2025-12-28
 
 ### Fixed
