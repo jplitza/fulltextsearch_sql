@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.5] - 2026-03-07
+
+### Fixed
+
+- Unchanged re-release of 1.3.4 due to failed experiments with immutable Github release.
+
 ## [1.3.4] - 2026-03-07
 
 ### Added
