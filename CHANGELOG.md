@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.4] - 2026-03-07
+
+### Added
+
+- Declare support for Nextcloud 33.
+
 ## [1.3.3] - 2026-01-08
 
 ### Fixed
