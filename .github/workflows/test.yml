@@ -39,6 +39,7 @@ jobs:
             port: 5432
         nextcloud:
         - "31"
+        - "32"
         - "33"
     services:
       db:
