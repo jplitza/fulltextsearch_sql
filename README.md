@@ -8,7 +8,7 @@ It allows you to index your content into the usual Nextcloud database.
 
 ## Compatibility
 
-The extension requires your Nextcloud database to be MySQL or PostgreSQL.
+The extension requires your Nextcloud database to be MySQL (version 8.0 or higher), MariaDB (version 10.9 or higher) or PostgreSQL (version 17 or higher).
 
 ## Status
 
