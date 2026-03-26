@@ -53,8 +53,6 @@ jobs:
             --exclude 'renovate.json' \
             --transform 's/^\./${{env.APP_NAME}}/' \
             --sort=name \
-            --format=posix \
-            --pax-option='delete=atime,delete=ctime' \
             --mtime="$(git show --no-patch --format=%ci HEAD)" \
             --numeric-owner --owner=0 --group=0 \
             --mode='go+u,go-w' \
