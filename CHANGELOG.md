@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.6] - 2026-03-26
+
+### Fixed
+
+- Unchanged re-release of 1.3.4 with fixed archive creation pipeline.
+
 ## [1.3.5] - 2026-03-07
 
 ### Fixed
