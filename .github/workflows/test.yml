@@ -40,7 +40,7 @@ jobs:
         nextcloud:
         - "31"
         - "32"
-        - "33"
+        - "34"
     services:
       db:
         image: ${{ matrix.db.image }}
