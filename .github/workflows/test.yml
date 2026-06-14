@@ -91,7 +91,7 @@ jobs:
             --database-name=${{ matrix.db.database }}
 
       - name: Enable fulltextsearch app
-        run: php occ -n app:enable fulltextsearch
+        run: php occ -n app:enable -f fulltextsearch
       
       - name: Enable fulltextsearch_sql app
         run: php occ -n app:enable fulltextsearch_sql
@@ -115,7 +115,7 @@ jobs:
         run: php occ -n fulltextsearch:test --platform_delay 1
 
       - name: Enable files_fulltextsearch provider
-        run: php occ app:enable files_fulltextsearch
+        run: php occ app:enable -f files_fulltextsearch
 
       - name: Identify test PDF document
         run: >
