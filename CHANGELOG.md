@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.4.0] - 2026-06-14
+
+### Added
+
+- Support for Nextcloud 34.
+
+### Changed
+
+- Updated pdfparser dependency to 2.12.5 (#35)
+
 ## [1.3.6] - 2026-03-26
 
 ### Fixed
