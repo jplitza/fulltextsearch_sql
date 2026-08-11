@@ -33,6 +33,9 @@ jobs:
       - name: Lint frontend styles
         run: npm run stylelint
 
+      - name: Type-check frontend
+        run: npm run typecheck
+
       - name: Build frontend
         run: npm run build
 

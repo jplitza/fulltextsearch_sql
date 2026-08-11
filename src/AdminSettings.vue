@@ -14,6 +14,11 @@
 				:helperText="t('fulltextsearch_sql', 'Comma-separated list of encodings to detect while indexing. Adding encodings other than UTF-8 can cause binary files to be indexed unintentionally.')"
 				placeholder="UTF-8, ISO-8859-1"
 				@blur="saveSettings" />
+			<p class="encoding-documentation">
+				<a href="https://www.php.net/manual/en/mbstring.supported-encodings.php">
+					{{ t('fulltextsearch_sql', 'View the list of supported character encodings') }}
+				</a>
+			</p>
 
 			<NcTextField
 				v-model="config.excerpt_context"
@@ -87,3 +92,10 @@ async function saveSettings(): Promise<void> {
 	}
 }
 </script>
+
+<style scoped>
+.encoding-documentation {
+	margin: 0;
+	padding-inline: var(--border-radius-element);
+}
+</style>

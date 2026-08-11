@@ -5,7 +5,6 @@
 		"allowJs": true,
 		"allowImportingTsExtensions": true,
 		"allowSyntheticDefaultImports": true,
-		"rewriteRelativeImportExtensions": true,
 		"moduleResolution": "bundler",
 		"noImplicitAny": false,
 		"outDir": "./js/",

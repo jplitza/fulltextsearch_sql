@@ -21,6 +21,7 @@
     "lint:fix": "eslint --fix",
     "stylelint": "stylelint src/**/*.scss src/**/*.vue",
     "stylelint:fix": "stylelint src/**/*.scss src/**/*.vue --fix",
+    "typecheck": "vue-tsc --noEmit",
     "watch": "vite --mode development build --watch"
   },
   "dependencies": {
@@ -42,7 +43,8 @@
     "eslint": "^10.6.0",
     "sass": "^1.99.0",
     "typescript": "^5.9.3",
-    "vite": "^7.3.6"
+    "vite": "^7.3.6",
+    "vue-tsc": "^3.3.9"
   },
   "engines": {
     "node": "^24.0.0",
