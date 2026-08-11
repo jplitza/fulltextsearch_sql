@@ -1,0 +1,16 @@
+{
+	"extends": "@vue/tsconfig/tsconfig.json",
+	"include": ["./src/**/*.ts", "./src/**/*.vue"],
+	"compilerOptions": {
+		"allowJs": true,
+		"allowImportingTsExtensions": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "bundler",
+		"noImplicitAny": false,
+		"outDir": "./js/",
+		"strict": true
+	},
+	"vueCompilerOptions": {
+		"target": 2.7
+	}
+}

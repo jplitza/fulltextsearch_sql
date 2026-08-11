@@ -30,6 +30,17 @@ jobs:
 
       - uses: actions/checkout@v6
 
+      - name: Validate release version
+        run: |
+          APP_VERSION="$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' appinfo/info.xml)"
+          PACKAGE_VERSION="$(jq -r '.version' package.json)"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+
+          if [ "$APP_VERSION" != "$TAG_VERSION" ] || [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "Release tag $TAG_VERSION does not match app version $APP_VERSION and package version $PACKAGE_VERSION"
+            exit 1
+          fi
+
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
@@ -45,11 +56,28 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Build frontend
+        run: |
+          npm ci
+          npm run build
+
       - name: Create release archive
         run: >
           tar -cf - \
             --exclude '.git*' \
             --exclude 'composer.*' \
+            --exclude 'node_modules' \
+            --exclude 'package*.json' \
+            --exclude 'src' \
+            --exclude 'eslint.config.js' \
+            --exclude 'stylelint.config.cjs' \
+            --exclude 'tsconfig.json' \
+            --exclude 'vite.config.ts' \
             --exclude 'renovate.json' \
             --transform 's/^\./${{env.APP_NAME}}/' \
             --sort=name \
