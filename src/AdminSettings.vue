@@ -102,6 +102,7 @@ async function saveSettings(): Promise<void> {
 <style scoped>
 .encoding-documentation {
 	margin: 0;
+	margin-block-end: calc(var(--default-grid-baseline) * 2);
 	padding-inline: var(--border-radius-element);
 }
 
@@ -113,7 +114,6 @@ async function saveSettings(): Promise<void> {
 	text-decoration: underline;
 	text-decoration-color: var(--color-border-maxcontrast);
 	text-underline-offset: 2px;
-
 }
 
 .encoding-documentation__link:hover,
