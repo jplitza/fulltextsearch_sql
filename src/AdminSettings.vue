@@ -15,8 +15,14 @@
 				placeholder="UTF-8, ISO-8859-1"
 				@blur="saveSettings" />
 			<p class="encoding-documentation">
-				<a href="https://www.php.net/manual/en/mbstring.supported-encodings.php">
-					{{ t('fulltextsearch_sql', 'View the list of supported character encodings') }}
+				<a
+					class="encoding-documentation__link"
+					href="https://www.php.net/manual/en/mbstring.supported-encodings.php"
+					target="_blank"
+					rel="noopener noreferrer"
+					:aria-label="t('fulltextsearch_sql', 'Supported character encodings (opens in a new tab)')">
+					{{ t('fulltextsearch_sql', 'Supported character encodings') }}
+					<span class="encoding-documentation__external-icon" aria-hidden="true">↗</span>
 				</a>
 			</p>
 
@@ -97,5 +103,27 @@ async function saveSettings(): Promise<void> {
 .encoding-documentation {
 	margin: 0;
 	padding-inline: var(--border-radius-element);
+}
+
+.encoding-documentation__link {
+	display: inline-flex;
+	gap: var(--default-grid-baseline);
+	align-items: center;
+	color: var(--color-text-maxcontrast);
+	text-decoration: underline;
+	text-decoration-color: var(--color-border-maxcontrast);
+	text-underline-offset: 2px;
+
+}
+
+.encoding-documentation__link:hover,
+.encoding-documentation__link:focus-visible {
+	color: var(--color-main-text);
+	text-decoration-color: currentColor;
+}
+
+.encoding-documentation__external-icon {
+	font-size: 0.875em;
+	line-height: 1;
 }
 </style>
