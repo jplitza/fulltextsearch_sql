@@ -4,6 +4,7 @@ on:
     branches:
       - '**'
     paths-ignore:
+      - CHANGELOG.md
       - README.md
       - LICENSE
       - renovate.json
