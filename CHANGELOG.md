@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1] - 2026-08-12
+
+### Fixed
+
+- Corrected the app version in `info.xml` so existing 1.3.6 installations can upgrade to the Nextcloud 34-compatible release.
+- Ported the admin settings frontend to Vue for compatibility with the Nextcloud 34 Full Text Search settings page ([upstream issue #41](https://github.com/jplitza/fulltextsearch_sql/issues/41)).
+
 ## [1.4.0] - 2026-06-14
 
 ### Added
