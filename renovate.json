@@ -29,6 +29,7 @@
   "packageRules": [
     {
       "matchDatasources": ["npm"],
+      "matchUpdateTypes": ["!major"],
       "groupName": "frontend dependencies"
     }
   ]
