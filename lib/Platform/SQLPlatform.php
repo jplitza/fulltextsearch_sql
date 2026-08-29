@@ -186,7 +186,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 			try {
 				$this->indexDocumentMapper->deleteDocument($index->getProviderId(), $index->getDocumentId());
 				$this->updateNewIndexResult($index, 'index deleted', 'success', IRunner::RESULT_TYPE_SUCCESS);
-			} catch (Exception $e) {
+			} catch (Throwable $e) {
 				$this->updateNewIndexResult(
 					$index, 'index not deleted', 'issue while deleting index', IRunner::RESULT_TYPE_WARNING
 				);
@@ -276,7 +276,7 @@ class SQLPlatform implements IFullTextSearchPlatform {
 				$index, json_encode(true), 'ok',
 				IRunner::RESULT_TYPE_SUCCESS
 			);
-		} catch (\Exception $e) {
+		} catch (Throwable $e) {
 			$result = $e->getMessage();
 			$index->setStatus(IIndex::INDEX_FAILED);
 			$index->addError(
