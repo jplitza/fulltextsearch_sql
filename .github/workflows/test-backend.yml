@@ -1,46 +1,17 @@
-name: Test
+name: Test Backend
 on:
   push:
     branches:
       - '**'
-    paths-ignore:
-      - CHANGELOG.md
-      - README.md
-      - LICENSE
-      - renovate.json
-      - .gitignore
-      - appinfo/info.xml
-      - .github/workflows/release.yml
+    paths:
+      - 'lib/**'
+      - 'appinfo/**'
+      - '.github/workflows/test.yml'
+      - 'composer.*'
   workflow_call:
 
 jobs:
-  frontend:
-    runs-on: ubuntu-latest
-    name: Frontend
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 24
-          cache: npm
-
-      - name: Install frontend dependencies
-        run: npm ci
-
-      - name: Lint frontend
-        run: npm run lint
-
-      - name: Lint frontend styles
-        run: npm run stylelint
-
-      - name: Type-check frontend
-        run: npm run typecheck
-
-      - name: Build frontend
-        run: npm run build
-
-  test:
+  test-backend:
     runs-on: ubuntu-latest
     name: Nextcloud ${{ matrix.nextcloud }} - ${{ matrix.db.name }}
     strategy:

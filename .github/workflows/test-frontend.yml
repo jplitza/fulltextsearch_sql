@@ -1,0 +1,42 @@
+name: Test Frontend
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'js/**'
+      - 'src/**'
+      - '.github/workflows/test-frontend.yml'
+      - 'eslint.config.js'
+      - 'package*.json'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - 'stylelint.config.cjs'
+  workflow_call:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    name: Frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Lint frontend
+        run: npm run lint
+
+      - name: Lint frontend styles
+        run: npm run stylelint
+
+      - name: Type-check frontend
+        run: npm run typecheck
+
+      - name: Build frontend
+        run: npm run build

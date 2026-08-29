@@ -9,11 +9,13 @@ permissions:
   contents: write
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
+  test-backend:
+    uses: ./.github/workflows/test-backend.yml
+  test-frontend:
+    uses: ./.github/workflows/test-frontend.yml
   build:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test-backend, test-frontend]
 
     if: ${{ github.repository_owner == 'jplitza' }}
 
