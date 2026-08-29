@@ -25,5 +25,11 @@
       "datasourceTemplate": "docker",
       "depNameTemplate": "nextcloud"
     }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["npm"],
+      "groupName": "frontend dependencies"
+    }
   ]
 }
