@@ -1,6 +1,6 @@
 {
   "name": "fulltextsearch_sql",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "private": true,
   "description": "Nextcloud Full Text Search platform backed by the Nextcloud database",
   "homepage": "https://github.com/jplitza/fulltextsearch_sql#readme",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2] - 2026-09-01
+
+### Fixed
+
+- The PDF parser was errornously not contained in the 1.4.1 release. It is now included again.
+- Instead of also handling internal PHP errors, no errors were handled at all anymore. This is now fixed.
+
 ## [1.4.1] - 2026-08-12
 
 ### Fixed
