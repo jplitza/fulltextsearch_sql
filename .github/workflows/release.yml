@@ -36,10 +36,11 @@ jobs:
         run: |
           APP_VERSION="$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' appinfo/info.xml)"
           PACKAGE_VERSION="$(jq -r '.version' package.json)"
+          PACKAGE_LOCK_VERSION="$(jq -r '.version' package-lock.json)"
           TAG_VERSION="${GITHUB_REF_NAME#v}"
 
-          if [ "$APP_VERSION" != "$TAG_VERSION" ] || [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
-            echo "Release tag $TAG_VERSION does not match app version $APP_VERSION and package version $PACKAGE_VERSION"
+          if [ "$APP_VERSION" != "$TAG_VERSION" ] || [ "$PACKAGE_VERSION" != "$TAG_VERSION" ] || { "$PACKAGE_LOCK_VERSION" != "$TAG_VERSION" ]; then
+            echo "Release tag $TAG_VERSION does not match app version $APP_VERSION, package version $PACKAGE_VERSION and package lock version $PACKAGE_LOCK_VERSION"
             exit 1
           fi
 
