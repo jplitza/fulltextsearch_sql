@@ -71,16 +71,16 @@ jobs:
       - name: Create release archive
         run: >
           tar -cf - \
-            --exclude '.git*' \
-            --exclude 'composer.*' \
-            --exclude 'node_modules' \
-            --exclude 'package*.json' \
-            --exclude 'src' \
-            --exclude 'eslint.config.js' \
-            --exclude 'stylelint.config.cjs' \
-            --exclude 'tsconfig.json' \
-            --exclude 'vite.config.ts' \
-            --exclude 'renovate.json' \
+            --exclude './.git*' \
+            --exclude './composer.*' \
+            --exclude './node_modules' \
+            --exclude './package*.json' \
+            --exclude './src' \
+            --exclude './eslint.config.js' \
+            --exclude './stylelint.config.cjs' \
+            --exclude './tsconfig.json' \
+            --exclude './vite.config.ts' \
+            --exclude './renovate.json' \
             --transform 's/^\./${{env.APP_NAME}}/' \
             --sort=name \
             --mtime="$(git show --no-patch --format=%ci HEAD)" \
