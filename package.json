@@ -42,7 +42,7 @@
     "@vue/tsconfig": "0.9.1",
     "eslint": "10.9.1",
     "sass": "1.103.1",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "vite": "7.3.6",
     "vue-tsc": "3.3.11"
   },
