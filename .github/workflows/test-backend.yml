@@ -39,7 +39,7 @@ jobs:
         - "31"
         - "32"
         - "33"
-        - "34"
+        - "35"
     services:
       db:
         image: ${{ matrix.db.image }}
