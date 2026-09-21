@@ -1,8 +1,6 @@
 name: Test Backend
 on:
-  push:
-    branches:
-      - '**'
+  pull_request:
     paths:
       - 'lib/**'
       - 'appinfo/**'
