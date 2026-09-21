@@ -1,8 +1,6 @@
 name: Test Frontend
 on:
-  push:
-    branches:
-      - '**'
+  pull_request:
     paths:
       - 'js/**'
       - 'src/**'
