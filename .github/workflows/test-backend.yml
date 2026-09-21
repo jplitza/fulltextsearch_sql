@@ -120,7 +120,13 @@ jobs:
           php occ info:file '/admin/files/Documents/Nextcloud flyer.pdf' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
 
       - name: Index test PDF document
-        run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
+        run: &index_doc |
+          if [ "${{ matrix.nextcloud }}" -ge 32 ]; then
+            # workaround for https://github.com/nextcloud/fulltextsearch/issues/1011
+            php occ fulltextsearch:document:index --collection "" admin files "$TEST_DOC"
+          else
+            php occ fulltextsearch:document:index admin files "$TEST_DOC"
+          fi
       
       - name: Search for test PDF document
         run: >
@@ -132,10 +138,10 @@ jobs:
       - name: Identify test ISO-8859-1 document
         run: >
           php occ info:file '/admin/files/iso-8859-1.txt' | awk '$1 == "fileid:" { print "TEST_DOC=" $2 }' > "$GITHUB_ENV"
-      
+
       - name: Index test ISO-8859-1 document
-        run: php occ fulltextsearch:document:index admin files "$TEST_DOC"
-      
+        run: *index_doc
+
       - name: Search for test ISO-8859-1 document
         run: >
           php occ fulltextsearch:search admin testzwecke | tee /dev/stderr | grep -q -e "^ - $TEST_DOC score:" -e "^ *\* id: $TEST_DOC"
