@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.0] - 2026-09-21
+
+### Added
+
+- Support for Nextcloud 35.
+
 ## [1.4.2] - 2026-09-01
 
 ### Fixed
