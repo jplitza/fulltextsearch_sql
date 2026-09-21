@@ -111,7 +111,7 @@ jobs:
             custom_apps/fulltextsearch/lib/Command/Test.php
 
       - name: Run fulltextsearch test
-        run: php occ -n fulltextsearch:test --platform_delay 1
+        run: php occ -n fulltextsearch:test
 
       - name: Enable files_fulltextsearch provider
         run: php occ app:enable -f files_fulltextsearch
