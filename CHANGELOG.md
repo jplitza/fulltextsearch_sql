@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.1] - 2026-10-14
+
+### Fixed
+
+- Updated dependencies, including security improvements in the PDF parsing library.
+
 ## [1.5.0] - 2026-09-21
 
 ### Added
